@@ -275,7 +275,7 @@ ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = contine
 
 Choose a ggplot2 theme and provide arguments to support your choice. There is no definitive right or wrong answer in this case, but you should clearly express your reasoning.
 
-We will use `theme_minimal()` for ggplot2, and here is why:
+For the ggplot2 theme, we used `theme_minimal()` due to the following reasons:
 
 - **Clean and Modern Look**: The use of `theme_minimal()` makes the plot clean and contemporary, which is suitable for reading.
 - **Data Focus**: It minimizes the number of visual components that may distract from the core data itself, so the focus always remains on key insights.
