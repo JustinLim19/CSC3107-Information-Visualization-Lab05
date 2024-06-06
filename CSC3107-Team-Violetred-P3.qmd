@@ -11,6 +11,21 @@ date: "2024-06-07"
 format: html
 ---
 
+# Importing Library and Data
+```{r}
+#| label: required-packages
+#| message: false
+
+library(tidyverse)
+library(readxl)
+library(countrycode)
+library(ggplot2)
+library(ggrepel)
+library(scales)
+library(styler)
+library(lintr)
+```
+
 ## 1 Introduction
 
 In a classic paper, Preston (1975) discussed scatter plots of life expectancy versus national income per capita (Figure 1.1), where each point represents a different country. The term “Preston curve” has since become commonly used for curves fitted to similar data, typically using the per-capita gross domestic product (GDP), instead of national income, as x-value. Preston (1975) and many others have used untransformed x-values and y-values. However, for a different approach to visualizing the data, the Swedish foundation Gapminder (2020) employs a logarithmic scale for income (Figure 1.2). The use of a logarithmic scale is justified because per-capita GDP, as well as many other economic indicators, exhibits a right-skewed distribution. This exercise adopts Gapminder’s approach by using a logarithmic scale for income.
@@ -35,15 +50,6 @@ The CSV files on these pages are incorrectly formatted. Instead, please click on
 Import the World Bank data for GDP per capita, life expectancy, and population as three tibbles.
 
 ```{r}
-library(tidyverse)
-library(readxl)
-library(countrycode)
-library(ggplot2)
-library(ggrepel)
-library(scales)
-library(styler)
-library(lintr)
-
 gdp_data <- read_excel("API_NY.GDP.PCAP.KD_DS2_en_excel_v2_143214.xls", sheet = "Data", skip = 3)
 life_expectancy_data <- read_excel("API_SP.DYN.LE00.IN_DS2_en_excel_v2_142982.xls", sheet = "Data", skip = 3)
 population_data <- read_excel("API_SP.POP.TOTL_DS2_en_excel_v2_144629.xls", sheet = "Data", skip = 3)
