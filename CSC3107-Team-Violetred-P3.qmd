@@ -64,9 +64,15 @@ code: Data from the Excel columns titled “Country Code.”
 Either gdp_per_cap, life_exp or pop: Data for 2019 only.
 
 ```{r}
-gdp_2019 <- gdp_data %>% select(`Country Name`, `Country Code`, `2019`) %>% rename(country = `Country Name`, code = `Country Code`, gdp_per_cap = `2019`)
-life_exp_2019 <- life_expectancy_data %>% select(`Country Name`, `Country Code`, `2019`) %>% rename(country = `Country Name`, code = `Country Code`, life_exp = `2019`)
-pop_2019 <- population_data %>% select(`Country Name`, `Country Code`, `2019`) %>% rename(country = `Country Name`, code = `Country Code`, pop = `2019`)
+gdp_2019 <- gdp_data %>%
+  select(`Country Name`, `Country Code`, `2019`) %>%
+  rename(country = `Country Name`, code = `Country Code`, gdp_per_cap = `2019`)
+life_exp_2019 <- life_expectancy_data %>%
+  select(`Country Name`, `Country Code`, `2019`) %>%
+  rename(country = `Country Name`, code = `Country Code`, life_exp = `2019`)
+pop_2019 <- population_data %>%
+  select(`Country Name`, `Country Code`, `2019`) %>%
+  rename(country = `Country Name`, code = `Country Code`, pop = `2019`)
 ```
 
 # 2.3 Merge Data
@@ -74,8 +80,8 @@ pop_2019 <- population_data %>% select(`Country Name`, `Country Code`, `2019`) %
 Use left_join() to merge the three spreadsheets into a single tibble named countries containing five columns: country, code, gdp_per_cap, life_exp, and pop.
 
 ```{r}
-countries <- gdp_2019 %>% 
-  left_join(life_exp_2019, by = c("country", "code")) %>% 
+countries <- gdp_2019 %>%
+  left_join(life_exp_2019, by = c("country", "code")) %>%
   left_join(pop_2019, by = c("country", "code"))
 ```
 
@@ -84,8 +90,8 @@ countries <- gdp_2019 %>%
 Use the countrycode() function to append a code_2 column and exclude non-country rows.
 
 ```{r}
-countries <- countries %>% 
-  mutate(code_2 = countrycode(code, origin = "wb", destination = "wb", warn = FALSE)) %>% 
+countries <- countries %>%
+  mutate(code_2 = countrycode(code, origin = "wb", destination = "wb", warn = FALSE)) %>%
   filter(!is.na(code_2))
 ```
 
@@ -94,7 +100,7 @@ countries <- countries %>%
 Use countrycode() to append a colummn containing the continent of each country.
 
 ```{r}
-countries <- countries %>% 
+countries <- countries %>%
   mutate(continent = countrycode(country, origin = "country.name", destination = "continent"))
 ```
 
@@ -103,7 +109,7 @@ countries <- countries %>%
 Remove all rows from the countries tibble that contain any missing values to prevent ggplot2 from triggering a warning in subsequent tasks.
 
 ```{r}
-countries <- countries %>% 
+countries <- countries %>%
   drop_na()
 ```
 
@@ -134,10 +140,10 @@ top_life_exp <- countries %>% top_n(10, life_exp)
 bottom_life_exp <- countries %>% top_n(-10, life_exp)
 top_pop <- countries %>% top_n(10, pop)
 
-label_countries <- bind_rows(top_gdp, bottom_gdp, top_life_exp, bottom_life_exp, top_pop) %>% 
+label_countries <- bind_rows(top_gdp, bottom_gdp, top_life_exp, bottom_life_exp, top_pop) %>%
   distinct(country, .keep_all = TRUE)
 
-countries <- countries %>% 
+countries <- countries %>%
   mutate(label = ifelse(country %in% label_countries$country, code, ""))
 ```
 
@@ -189,12 +195,14 @@ ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = contine
   scale_x_log10() +
   geom_text_repel(aes(label = label), show.legend = FALSE) +
   geom_smooth(method = "loess", aes(weight = pop), color = "grey50", alpha = 0.5, size = 1) +
-  labs(title = "Longevity and Wealth by Country in 2019",
-       x = "GDP per Capita (US$, PPP 2019)",
-       y = "Life Expectancy (years)",
-       size = "Population",
-       color = "Continent",
-       caption = "Source: World Bank") +
+  labs(
+    title = "Longevity and Wealth by Country in 2019",
+    x = "GDP per Capita (US$, PPP 2019)",
+    y = "Life Expectancy (years)",
+    size = "Population",
+    color = "Continent",
+    caption = "Source: World Bank"
+  ) +
   theme_minimal()
 ```
 
@@ -211,12 +219,14 @@ ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = contine
   ) +
   geom_text_repel(aes(label = label), show.legend = FALSE) +
   geom_smooth(method = "loess", aes(weight = pop), color = "grey50", alpha = 0.5, size = 1) +
-  labs(title = "Longevity and Wealth by Country in 2019",
-       x = "GDP per Capita (US$, PPP 2019)",
-       y = "Life Expectancy (years)",
-       size = "Population",
-       color = "Continent",
-       caption = "Source: World Bank") +
+  labs(
+    title = "Longevity and Wealth by Country in 2019",
+    x = "GDP per Capita (US$, PPP 2019)",
+    y = "Life Expectancy (years)",
+    size = "Population",
+    color = "Continent",
+    caption = "Source: World Bank"
+  ) +
   theme_minimal()
 ```
 
@@ -233,15 +243,19 @@ ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = contine
   ) +
   geom_text_repel(aes(label = label), show.legend = FALSE) +
   geom_smooth(method = "loess", aes(weight = pop), color = "grey50", alpha = 0.5, size = 1) +
-  scale_size_area(max_size = 15,
-                  breaks = c(1e6, 1e7, 1e8, 1e9),
-                  labels = c("1M", "10M", "100M", "1B")) +
-  labs(title = "Longevity and Wealth by Country in 2019",
-       x = "GDP per Capita (US$, PPP 2019)",
-       y = "Life Expectancy (years)",
-       size = "Population",
-       color = "Continent",
-       caption = "Source: World Bank") +
+  scale_size_area(
+    max_size = 15,
+    breaks = c(1e6, 1e7, 1e8, 1e9),
+    labels = c("1M", "10M", "100M", "1B")
+  ) +
+  labs(
+    title = "Longevity and Wealth by Country in 2019",
+    x = "GDP per Capita (US$, PPP 2019)",
+    y = "Life Expectancy (years)",
+    size = "Population",
+    color = "Continent",
+    caption = "Source: World Bank"
+  ) +
   theme_minimal()
 ```
 
@@ -258,16 +272,20 @@ ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = contine
   ) +
   geom_text_repel(aes(label = label), show.legend = FALSE) +
   geom_smooth(method = "loess", aes(weight = pop), color = "grey50", alpha = 0.5, size = 1) +
-  scale_size_area(max_size = 15,
-                  breaks = c(1e6, 1e7, 1e8, 1e9),
-                  labels = c("1M", "10M", "100M", "1B")) +
+  scale_size_area(
+    max_size = 15,
+    breaks = c(1e6, 1e7, 1e8, 1e9),
+    labels = c("1M", "10M", "100M", "1B")
+  ) +
   scale_color_brewer(palette = "Set1") +
-  labs(title = "Longevity and Wealth by Country in 2019",
-       x = "GDP per Capita (US$, PPP 2019)",
-       y = "Life Expectancy (years)",
-       size = "Population",
-       color = "Continent",
-       caption = "Source: World Bank") +
+  labs(
+    title = "Longevity and Wealth by Country in 2019",
+    x = "GDP per Capita (US$, PPP 2019)",
+    y = "Life Expectancy (years)",
+    size = "Population",
+    color = "Continent",
+    caption = "Source: World Bank"
+  ) +
   theme_minimal()
 ```
 
@@ -284,17 +302,21 @@ ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = contine
   ) +
   geom_text_repel(aes(label = label), show.legend = FALSE, min.segment.length = 0.2) +
   geom_smooth(method = "loess", aes(weight = pop), color = "grey50", alpha = 0.5, size = 1) +
-  scale_size_area(max_size = 15,
-                  breaks = c(1e6, 1e7, 1e8, 1e9),
-                  labels = c("1M", "10M", "100M", "1B"), 
-                  guide = guide_legend(override.aes = list(alpha = 1))) +
+  scale_size_area(
+    max_size = 15,
+    breaks = c(1e6, 1e7, 1e8, 1e9),
+    labels = c("1M", "10M", "100M", "1B"),
+    guide = guide_legend(override.aes = list(alpha = 1))
+  ) +
   scale_color_brewer(palette = "Set1", guide = guide_legend(override.aes = list(size = 5, alpha = 1))) +
-  labs(title = "Longevity and Wealth by Country in 2019",
-       x = "GDP per Capita (US$, PPP 2019)",
-       y = "Life Expectancy (years)",
-       size = "Population",
-       color = "Continent",
-       caption = "Source: World Bank") +
+  labs(
+    title = "Longevity and Wealth by Country in 2019",
+    x = "GDP per Capita (US$, PPP 2019)",
+    y = "Life Expectancy (years)",
+    size = "Population",
+    color = "Continent",
+    caption = "Source: World Bank"
+  ) +
   theme_minimal()
 ```
 
@@ -314,22 +336,27 @@ ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = contine
     breaks = breaks_log(n = 6),
     labels = label_number(big.mark = ",", accuracy = 1)
   ) +
-  geom_text_repel(aes(label = label), 
-                  show.legend = FALSE, 
-                  min.segment.length = 0.2,
-                  max.overlaps = Inf) +
+  geom_text_repel(aes(label = label),
+    show.legend = FALSE,
+    min.segment.length = 0.2,
+    max.overlaps = Inf
+  ) +
   geom_smooth(method = "loess", aes(weight = pop), color = "grey50", alpha = 0.5, size = 1) +
-  scale_size_area(max_size = 15,
-                  breaks = c(1e6, 1e7, 1e8, 1e9),
-                  labels = c("1M", "10M", "100M", "1B"), 
-                  guide = guide_legend(override.aes = list(alpha = 1, color = "black"))) +
+  scale_size_area(
+    max_size = 15,
+    breaks = c(1e6, 1e7, 1e8, 1e9),
+    labels = c("1M", "10M", "100M", "1B"),
+    guide = guide_legend(override.aes = list(alpha = 1, color = "black"))
+  ) +
   scale_color_brewer(palette = "Set1", guide = guide_legend(override.aes = list(size = 5, alpha = 1))) +
-  labs(title = "Longevity and Wealth by Country in 2019",
-       x = "GDP per Capita (US$, PPP 2019)",
-       y = "Life Expectancy (years)",
-       size = "Population",
-       color = "Continent",
-       caption = "Source: World Bank") +
+  labs(
+    title = "Longevity and Wealth by Country in 2019",
+    x = "GDP per Capita (US$, PPP 2019)",
+    y = "Life Expectancy (years)",
+    size = "Population",
+    color = "Continent",
+    caption = "Source: World Bank"
+  ) +
   theme_minimal()
 ```
 
