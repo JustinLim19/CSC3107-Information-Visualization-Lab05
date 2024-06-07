@@ -314,7 +314,10 @@ ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = contine
     breaks = breaks_log(n = 6),
     labels = label_number(big.mark = ",", accuracy = 1)
   ) +
-  geom_text_repel(aes(label = label), show.legend = FALSE, min.segment.length = 0.2) +
+  geom_text_repel(aes(label = label), 
+                  show.legend = FALSE, 
+                  min.segment.length = 0.2,
+                  max.overlaps = Inf) +
   geom_smooth(method = "loess", aes(weight = pop), color = "grey50", alpha = 0.5, size = 1) +
   scale_size_area(max_size = 15,
                   breaks = c(1e6, 1e7, 1e8, 1e9),
