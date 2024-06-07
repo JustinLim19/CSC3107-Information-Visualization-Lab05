@@ -174,7 +174,7 @@ Use geom_smooth() to fit a single LOESS curve to all data points in the plot. Se
 ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = continent)) +
   geom_point(alpha = 0.5) +
   geom_text_repel(aes(label = label), show.legend = FALSE) +
-  geom_smooth(method = "loess", aes(weight = pop), color = "black") +
+  geom_smooth(method = "loess", aes(weight = pop), color = "grey50", alpha = 0.5) +
   scale_x_log10() +
   theme_minimal()
 ```
@@ -188,7 +188,7 @@ ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = contine
   geom_point(alpha = 0.5) +
   scale_x_log10() +
   geom_text_repel(aes(label = label), show.legend = FALSE) +
-  geom_smooth(method = "loess", aes(weight = pop), color = "black", size = 1) +
+  geom_smooth(method = "loess", aes(weight = pop), color = "grey50", alpha = 0.5, size = 1) +
   labs(title = "Longevity and Wealth by Country in 2019",
        x = "GDP per Capita (US$, PPP 2019)",
        y = "Life Expectancy (years)",
@@ -210,7 +210,7 @@ ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = contine
     labels = label_number(big.mark = ",", accuracy = 1)
   ) +
   geom_text_repel(aes(label = label), show.legend = FALSE) +
-  geom_smooth(method = "loess", aes(weight = pop), color = "black", size = 1) +
+  geom_smooth(method = "loess", aes(weight = pop), color = "grey50", alpha = 0.5, size = 1) +
   labs(title = "Longevity and Wealth by Country in 2019",
        x = "GDP per Capita (US$, PPP 2019)",
        y = "Life Expectancy (years)",
@@ -232,7 +232,7 @@ ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = contine
     labels = label_number(big.mark = ",", accuracy = 1)
   ) +
   geom_text_repel(aes(label = label), show.legend = FALSE) +
-  geom_smooth(method = "loess", aes(weight = pop), color = "black", size = 1) +
+  geom_smooth(method = "loess", aes(weight = pop), color = "grey50", alpha = 0.5, size = 1) +
   scale_size_area(max_size = 15,
                   breaks = c(1e6, 1e7, 1e8, 1e9),
                   labels = c("1M", "10M", "100M", "1B")) +
@@ -257,7 +257,7 @@ ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = contine
     labels = label_number(big.mark = ",", accuracy = 1)
   ) +
   geom_text_repel(aes(label = label), show.legend = FALSE) +
-  geom_smooth(method = "loess", aes(weight = pop), color = "black", size = 1) +
+  geom_smooth(method = "loess", aes(weight = pop), color = "grey50", alpha = 0.5, size = 1) +
   scale_size_area(max_size = 15,
                   breaks = c(1e6, 1e7, 1e8, 1e9),
                   labels = c("1M", "10M", "100M", "1B")) +
@@ -283,7 +283,7 @@ ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = contine
     labels = label_number(big.mark = ",", accuracy = 1)
   ) +
   geom_text_repel(aes(label = label), show.legend = FALSE, min.segment.length = 0.2) +
-  geom_smooth(method = "loess", aes(weight = pop), color = "black", size = 1) +
+  geom_smooth(method = "loess", aes(weight = pop), color = "grey50", alpha = 0.5, size = 1) +
   scale_size_area(max_size = 15,
                   breaks = c(1e6, 1e7, 1e8, 1e9),
                   labels = c("1M", "10M", "100M", "1B"), 
@@ -318,11 +318,11 @@ ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = contine
                   show.legend = FALSE, 
                   size = 3,
                   min.segment.length = 0.2) +
-  geom_smooth(method = "loess", aes(weight = pop), color = "black", size = 1) +
+  geom_smooth(method = "loess", aes(weight = pop), color = "grey50", alpha = 0.5, size = 1) +
   scale_size_area(max_size = 15,
                   breaks = c(1e6, 1e7, 1e8, 1e9),
                   labels = c("1M", "10M", "100M", "1B"), 
-                  guide = guide_legend(override.aes = list(alpha = 1, color = "darkgrey"))) +
+                  guide = guide_legend(override.aes = list(alpha = 1, color = "black"))) +
   scale_color_brewer(palette = "Set1", guide = guide_legend(override.aes = list(size = 5))) +
   labs(title = "Longevity and Wealth by Country in 2019",
        x = "GDP per Capita (US$, PPP 2019)",
