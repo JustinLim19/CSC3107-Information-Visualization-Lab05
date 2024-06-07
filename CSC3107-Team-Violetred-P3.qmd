@@ -186,12 +186,14 @@ Provide meaningful axis labels, legend labels and a title for the plot. Addition
 ```{r}
 ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = continent)) +
   geom_point(alpha = 0.5) +
-  geom_text_repel(aes(label = label), show.legend = FALSE) +
-  geom_smooth(method = "loess", aes(weight = pop), color = "black") +
   scale_x_log10() +
-  labs(title = "Preston Curve",
-       x = "GDP per Capita (log scale)",
-       y = "Life Expectancy",
+  geom_text_repel(aes(label = label), show.legend = FALSE) +
+  geom_smooth(method = "loess", aes(weight = pop), color = "black", size = 1) +
+  labs(title = "Longevity and Wealth by Country in 2019",
+       x = "GDP per Capita (US$, PPP 2019)",
+       y = "Life Expectancy (years)",
+       size = "Population",
+       color = "Continent",
        caption = "Source: World Bank") +
   theme_minimal()
 ```
@@ -203,12 +205,17 @@ Change the x-coordinates to a logarithmic scale in the plot. Adjust the breaks a
 ```{r}
 ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = continent)) +
   geom_point(alpha = 0.5) +
+  scale_x_log10(
+    breaks = breaks_log(n = 6),
+    labels = label_number(big.mark = ",", accuracy = 1)
+  ) +
   geom_text_repel(aes(label = label), show.legend = FALSE) +
-  geom_smooth(method = "loess", aes(weight = pop), color = "black") +
-  scale_x_log10(breaks = breaks_log(), labels = label_number()) +
-  labs(title = "Preston Curve",
-       x = "GDP per Capita (log scale)",
-       y = "Life Expectancy",
+  geom_smooth(method = "loess", aes(weight = pop), color = "black", size = 1) +
+  labs(title = "Longevity and Wealth by Country in 2019",
+       x = "GDP per Capita (US$, PPP 2019)",
+       y = "Life Expectancy (years)",
+       size = "Population",
+       color = "Continent",
        caption = "Source: World Bank") +
   theme_minimal()
 ```
@@ -220,13 +227,20 @@ Use scale_size_area() to adjust the legend so that the areas of the bubbles repr
 ```{r}
 ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = continent)) +
   geom_point(alpha = 0.5) +
+  scale_x_log10(
+    breaks = breaks_log(n = 6),
+    labels = label_number(big.mark = ",", accuracy = 1)
+  ) +
   geom_text_repel(aes(label = label), show.legend = FALSE) +
-  geom_smooth(method = "loess", aes(weight = pop), color = "black") +
-  scale_x_log10(breaks = breaks_log(), labels = label_number()) +
-  scale_size_area(max_size = 10, labels = c("1M", "10M", "100M", "1B")) +
-  labs(title = "Preston Curve",
-       x = "GDP per Capita (log scale)",
-       y = "Life Expectancy",
+  geom_smooth(method = "loess", aes(weight = pop), color = "black", size = 1) +
+  scale_size_area(max_size = 15,
+                  breaks = c(1e6, 1e7, 1e8, 1e9),
+                  labels = c("1M", "10M", "100M", "1B")) +
+  labs(title = "Longevity and Wealth by Country in 2019",
+       x = "GDP per Capita (US$, PPP 2019)",
+       y = "Life Expectancy (years)",
+       size = "Population",
+       color = "Continent",
        caption = "Source: World Bank") +
   theme_minimal()
 ```
@@ -238,14 +252,21 @@ Change the color scale to the ColorBrewer palette “Set1,” which provides cle
 ```{r}
 ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = continent)) +
   geom_point(alpha = 0.5) +
+  scale_x_log10(
+    breaks = breaks_log(n = 6),
+    labels = label_number(big.mark = ",", accuracy = 1)
+  ) +
   geom_text_repel(aes(label = label), show.legend = FALSE) +
-  geom_smooth(method = "loess", aes(weight = pop), color = "black") +
-  scale_x_log10(breaks = breaks_log(), labels = label_number()) +
-  scale_size_area(max_size = 10, labels = c("1M", "10M", "100M", "1B")) +
+  geom_smooth(method = "loess", aes(weight = pop), color = "black", size = 1) +
+  scale_size_area(max_size = 15,
+                  breaks = c(1e6, 1e7, 1e8, 1e9),
+                  labels = c("1M", "10M", "100M", "1B")) +
   scale_color_brewer(palette = "Set1") +
-  labs(title = "Preston Curve",
-       x = "GDP per Capita (log scale)",
-       y = "Life Expectancy",
+  labs(title = "Longevity and Wealth by Country in 2019",
+       x = "GDP per Capita (US$, PPP 2019)",
+       y = "Life Expectancy (years)",
+       size = "Population",
+       color = "Continent",
        caption = "Source: World Bank") +
   theme_minimal()
 ```
@@ -257,17 +278,23 @@ Semi-transparent colors are effective for addressing overplotting in the bubble 
 ```{r}
 ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = continent)) +
   geom_point(alpha = 0.5) +
-  geom_text_repel(aes(label = label), show.legend = FALSE) +
-  geom_smooth(method = "loess", aes(weight = pop), color = "black") +
-  scale_x_log10(breaks = breaks_log(), labels = label_number()) +
-  scale_size_area(max_size = 10, labels = c("1M", "10M", "100M", "1B"), guide = guide_legend(override.aes = list(alpha = 1))) +
-  scale_color_brewer(palette = "Set1", guide = guide_legend(override.aes = list(size = 6))) +
-  labs(
-    title = "Preston Curve",
-    x = "GDP per Capita (log scale)",
-    y = "Life Expectancy",
-    caption = "Source: World Bank"
+  scale_x_log10(
+    breaks = breaks_log(n = 6),
+    labels = label_number(big.mark = ",", accuracy = 1)
   ) +
+  geom_text_repel(aes(label = label), show.legend = FALSE) +
+  geom_smooth(method = "loess", aes(weight = pop), color = "black", size = 1) +
+  scale_size_area(max_size = 15,
+                  breaks = c(1e6, 1e7, 1e8, 1e9),
+                  labels = c("1M", "10M", "100M", "1B"), 
+                  guide = guide_legend(override.aes = list(alpha = 1))) +
+  scale_color_brewer(palette = "Set1", guide = guide_legend(override.aes = list(size = 6))) +
+  labs(title = "Longevity and Wealth by Country in 2019",
+       x = "GDP per Capita (US$, PPP 2019)",
+       y = "Life Expectancy (years)",
+       size = "Population",
+       color = "Continent",
+       caption = "Source: World Bank") +
   theme_minimal()
 ```
 
@@ -284,17 +311,24 @@ For the ggplot2 theme, we used `theme_minimal()` due to the following reasons:
 ```{r}
 ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = continent)) +
   geom_point(alpha = 0.5) +
-  geom_text_repel(aes(label = label), show.legend = FALSE) +
-  geom_smooth(method = "loess", aes(weight = pop), color = "black") +
-  scale_x_log10(breaks = breaks_log(), labels = label_number()) +
-  scale_size_area(max_size = 10, labels = c("1M", "10M", "100M", "1B"), guide = guide_legend(override.aes = list(alpha = 1))) +
-  scale_color_brewer(palette = "Set1", guide = guide_legend(override.aes = list(size = 6))) +
-  labs(
-    title = "Preston Curve",
-    x = "GDP per Capita (log scale)",
-    y = "Life Expectancy",
-    caption = "Source: World Bank"
+  scale_x_log10(
+    breaks = breaks_log(n = 6),
+    labels = label_number(big.mark = ",", accuracy = 1)
   ) +
+  geom_text_repel(aes(label = label), 
+                  show.legend = FALSE, size = 3) +
+  geom_smooth(method = "loess", aes(weight = pop), color = "black", size = 1) +
+  scale_size_area(max_size = 15,
+                  breaks = c(1e6, 1e7, 1e8, 1e9),
+                  labels = c("1M", "10M", "100M", "1B"), 
+                  guide = guide_legend(override.aes = list(alpha = 1, color = "darkgrey"))) +
+  scale_color_brewer(palette = "Set1", guide = guide_legend(override.aes = list(size = 6))) +
+  labs(title = "Longevity and Wealth by Country in 2019",
+       x = "GDP per Capita (US$, PPP 2019)",
+       y = "Life Expectancy (years)",
+       size = "Population",
+       color = "Continent",
+       caption = "Source: World Bank") +
   theme_minimal()
 ```
 
