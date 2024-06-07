@@ -282,13 +282,13 @@ ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = contine
     breaks = breaks_log(n = 6),
     labels = label_number(big.mark = ",", accuracy = 1)
   ) +
-  geom_text_repel(aes(label = label), show.legend = FALSE) +
+  geom_text_repel(aes(label = label), show.legend = FALSE, min.segment.length = 0.2) +
   geom_smooth(method = "loess", aes(weight = pop), color = "black", size = 1) +
   scale_size_area(max_size = 15,
                   breaks = c(1e6, 1e7, 1e8, 1e9),
                   labels = c("1M", "10M", "100M", "1B"), 
                   guide = guide_legend(override.aes = list(alpha = 1))) +
-  scale_color_brewer(palette = "Set1", guide = guide_legend(override.aes = list(size = 6))) +
+  scale_color_brewer(palette = "Set1", guide = guide_legend(override.aes = list(size = 5))) +
   labs(title = "Longevity and Wealth by Country in 2019",
        x = "GDP per Capita (US$, PPP 2019)",
        y = "Life Expectancy (years)",
@@ -306,7 +306,6 @@ For the ggplot2 theme, we used `theme_minimal()` due to the following reasons:
 
 - **Clean and Modern Look**: The use of `theme_minimal()` makes the plot clean and contemporary, which is suitable for reading.
 - **Data Focus**: It minimizes the number of visual components that may distract from the core data itself, so the focus always remains on key insights.
-- **Customization**: It can be easily customized with further fine-tunings for specific aesthetic tastes and presentation requirements.
 
 ```{r}
 ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = continent)) +
@@ -316,13 +315,15 @@ ggplot(countries, aes(x = gdp_per_cap, y = life_exp, size = pop, color = contine
     labels = label_number(big.mark = ",", accuracy = 1)
   ) +
   geom_text_repel(aes(label = label), 
-                  show.legend = FALSE, size = 3) +
+                  show.legend = FALSE, 
+                  size = 3,
+                  min.segment.length = 0.2) +
   geom_smooth(method = "loess", aes(weight = pop), color = "black", size = 1) +
   scale_size_area(max_size = 15,
                   breaks = c(1e6, 1e7, 1e8, 1e9),
                   labels = c("1M", "10M", "100M", "1B"), 
                   guide = guide_legend(override.aes = list(alpha = 1, color = "darkgrey"))) +
-  scale_color_brewer(palette = "Set1", guide = guide_legend(override.aes = list(size = 6))) +
+  scale_color_brewer(palette = "Set1", guide = guide_legend(override.aes = list(size = 5))) +
   labs(title = "Longevity and Wealth by Country in 2019",
        x = "GDP per Capita (US$, PPP 2019)",
        y = "Life Expectancy (years)",
